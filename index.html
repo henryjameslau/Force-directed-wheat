@@ -21,16 +21,19 @@ var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
-var color = d3.scaleOrdinal(d3.schemeCategory20);
+var color = d3.scaleLinear().domain([0,5660608]).range(["white","#081d58"]);
 var thickness = d3.scaleLog()
 	.domain([0,5660608])
-	.range([0,25]);
+	.range([2,25]);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody())
+    .force("charge", d3.forceManyBody().strength(-75))
     .force("center", d3.forceCenter(width / 2, height / 2));
+	
 
+
+	
 d3.json("wheattrade.json", function(error, graph) {
   if (error) throw error;
 
@@ -47,7 +50,7 @@ d3.json("wheattrade.json", function(error, graph) {
     .data(graph.nodes)
     .enter().append("circle")
       .attr("r", 5)
- //     .attr("fill", function(d) { return color(d.group); })
+//      .attr("fill", function(d) { return color(d.value); })
       .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
