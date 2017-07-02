@@ -51,7 +51,18 @@ d3.json("wheattrade.json", function(error, graph) {
     .enter().append("circle")
       .attr("r", 5)
 //      .attr("fill", function(d) { return color(d.value); })
-      .call(d3.drag()
+      .on("mouseover", function(d) {
+  link.style('stroke', function(l) {
+    if (d === l.source || d === l.target)
+      return "#00f";
+    else
+      return "#999";
+    });
+})
+	  .on("mouseout", function() {
+  link.style('stroke', "#999");
+})
+	  .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended));
